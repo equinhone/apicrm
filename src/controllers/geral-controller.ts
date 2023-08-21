@@ -6,6 +6,7 @@ interface sqlnterface {
     sql: string;
 }
 
+
 export const getGeral = async (req: Request, res: Response, next: NextFunction) => {
     //const results = await sequelize.query("select * from pessoas p where p.id >=3380");    
     //let sql = req.body as sqlnterface;

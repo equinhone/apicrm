@@ -8,6 +8,7 @@ export interface MunicipioAttributes extends Model {
   uf: string;
 }
 
+
 export const Municipio = sequelize.define<MunicipioAttributes>('Municipo', {
     id: {
       type: DataTypes.INTEGER,

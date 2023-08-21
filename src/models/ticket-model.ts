@@ -2,7 +2,6 @@ import moment from 'moment';
 import { sequelize } from '../db/db';
 import { DataTypes, Model, Optional } from 'sequelize';
 
-
 export interface TicketAttributes extends Model {
   id: number;
   usuario?: number;

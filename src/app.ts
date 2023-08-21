@@ -14,6 +14,7 @@ import municipiosRouter from './routers/municipios-router';
 
 const app = express();
 
+
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(helmet());

@@ -14,6 +14,7 @@ export const getMunicipios = async (req: Request, res: Response) => {
     }
 }
 
+
 export async function getUF(req: Request, res: Response, next: NextFunction) {    
     
     let municipio = await Municipio.findAll({        

@@ -10,6 +10,7 @@ export interface PessoaInterface extends Model {
     dtedicao:Date;
 }
 
+
 export const Pessoa = sequelize.define<PessoaInterface>('Pessoa', {
     id:{
         primaryKey: true,

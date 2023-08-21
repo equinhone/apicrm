@@ -14,6 +14,7 @@ export const createPessoas = async (req: Request, res: Response) => {
       }    
 }
 
+
 export const getPessoas = async (req: Request, res: Response) => {
     let pessoas = await Pessoa.findAll({
         order:[['id','asc']]

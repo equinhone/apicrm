@@ -18,6 +18,7 @@ export const createTicket = async (req: Request, res: Response) => {
       }    
 }
 
+
 export const getTickets = async (req: Request, res: Response) => {
     let tickets = await Ticket.findAll({
         order:[['id','asc']]
@@ -168,3 +169,4 @@ export default {
     iniciarAtendimentoTicket,
     encerrartendimentoTicket
 }
+
