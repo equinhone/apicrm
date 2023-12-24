@@ -47,9 +47,9 @@ app.use('/tickets',ticketsRouter);
 app.use('/municipios',municipiosRouter);
 app.use('/cadmensagem',cadmensagemRouter);
 app.use('/cadmensagemcategoria',cadmensagemcategoriaRouter);
-app.use('/wppmensagem',wpp_mensagemRouter);
-app.use('/wppkey',wpp_keyRouter);
-app.use('/service',mensagemServiceRouter);
+//app.use('/wppmensagem',wpp_mensagemRouter);
+//app.use('/wppkey',wpp_keyRouter);
+//app.use('/service',mensagemServiceRouter);
 
 //console.log('Isto aqui vai ser executado a cada 5 minutos'+ ; 
 /*setInterval(function () { 
