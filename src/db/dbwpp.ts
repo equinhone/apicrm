@@ -12,7 +12,7 @@ const sequelizeWpp = new Sequelize(
     process.env.WAA_PG_USER as string,
     process.env.WAA_PG_PASSWORD as string,
     {        
-        host: process.env.WAA_PG_HOST as string,
+        //host: process.env.WAA_PG_HOST as string,
         dialect: 'postgres',
         port: parseInt(process.env.WAA_PG_PORT as string),        
     }
