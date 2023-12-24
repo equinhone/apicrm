@@ -10,9 +10,14 @@ const router = express.Router();
 
 router.get('/', pessoaController.getPessoas);
 router.get('/:id', pessoaController.getPessoa);
+router.get('/foto/:id', pessoaController.getFoto);
+router.post('/importa', pessoaController.importaContato);
+
 router.post('/', pessoaController.createPessoas);
 router.put('/:id', pessoaController.updatePessoas);
 router.delete('/:id', pessoaController.deletePessoas);
+
+
 
 
 export default router;

@@ -35,8 +35,7 @@ export async function getTicket(req: Request, res: Response) {
         res.status(200);
         res.json(ticket);
     } else {
-        res.status(404);
-        res.json({ error: 'Ticket não localizada' });
+        res.status(404).json({ error: 'Ticket não localizada' });
     }
 }
 
@@ -115,22 +114,26 @@ export async function getTicketsEspera(req: Request, res: Response, next: NextFu
 }
 
 export async function getNovoTicketsEspera(req: Request, res: Response, next: NextFunction) {
-    let  lDataInicio = req.query.datainicio as string;    
+    let  lDataInicio = req.params.datainicio as string;    
+    let  lHoraInicio = req.params.horainicio as string; 
     //let  lData:Date = new Date(lDataInicio)   ;
-    let sql = "select * from vwticketsespera te where te.dtabertura>='"+lDataInicio+"'"          
+    let sql = "select * from vwticketsespera te where te.dtabertura>='"+lDataInicio+ " "+lHoraInicio+"' or te.dtultimamsg>='"+lDataInicio+ " "+lHoraInicio+"'"            
+
     try{
         const results = await sequelize.query(sql,{type: QueryTypes.SELECT})        
 
+        
         if(results.length > 0){
             res.status(200).json(results)
         }else{
-            res.status(204).json({error: 'registro não localizado'})
+            res.status(201).json({error: 'nao encontrado'})            
         }       
     } catch (error) {
         console.log('error');
         res.send(error).status(500);
     }
 }
+
 
 export async function iniciarAtendimentoTicket (req: Request, res: Response) {
     let { id } = req.params;    
