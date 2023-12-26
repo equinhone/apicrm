@@ -1,0 +1,5 @@
+POSTGRES_USER=crmame
+POSTGRES_PW=admin365214
+POSTGRES_DB=crmame
+PGADMIN_MAIL=equinhone@gmail.com
+PGADMIN_PW=admin365214

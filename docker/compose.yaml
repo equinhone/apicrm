@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  teste-postgres-compose:
+    image: postgres:15.3
+    environment:      
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB} #optional (specify default database instead of $POSTGRES_DB)      
+    ports:
+      - "15432:5432"
+    volumes:
+      - /home/bd/dados/Docker-Compose/PostgreSQL:/var/lib/postgresql/data 
+    restart: always
+    networks:
+      - postgres-compose-network
+      
+  teste-pgadmin-compose:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    ports:
+      - "16543:80"
+    depends_on:
+      - teste-postgres-compose
+    restart: always
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    driver: bridge
