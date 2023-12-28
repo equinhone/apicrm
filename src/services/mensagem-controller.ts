@@ -241,7 +241,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
         let lPessoaWapp:string;
         let lMimeType:string=''; 
         let lTipo:string='';
-        let lUrl:string ='';
+        let lUrl:string ='';        
 
         lEvent = json.event;
         console.log(lEvent)
@@ -400,7 +400,11 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                 } 
             })
 
-            if (existeMsg === null) {
+            if (existeMsg === null) {                             
+                
+                if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
+                    lBody = ''
+                }               
                 
                 //console.log('Nao existe a msg')
                 const novoWappMensagempKey = 
@@ -436,7 +440,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             console.log("Tipo de Arquivo:")
             console.log(json.type)
 
-            if (json.type = 'image'){
+            if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
             
                 let existeArquivo = await WappArquivo.findOne({ 
                     where: { 
