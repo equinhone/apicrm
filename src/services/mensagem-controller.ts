@@ -16,7 +16,7 @@ export const getMensagemAll = async (req: Request, res: Response) => {
     try{
         //const results = await sequelizeWpp.query(sql,{type: QueryTypes.SELECT})        
 
-        console.log('Executando');
+        //console.log('Executando');
 
         const results = await Mensagem.findAll({
             where: { readcrm:  null  },
@@ -55,9 +55,6 @@ export const getMensagemAll = async (req: Request, res: Response) => {
             } catch (error) {
                 //res.status(500).json(error)
                 console.log(error);
-                
-                
-
             }
         });
         
@@ -65,7 +62,6 @@ export const getMensagemAll = async (req: Request, res: Response) => {
         console.log(error);        
     }
 }
-
 
 export async function getMensagem() {
     
@@ -263,11 +259,11 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             lProsseguir = true;
             lMimeType = json.mimetype;            
 
-            gravaTxt(`${lEvent}_${lIdKey}`,obj);
+            //gravaTxt(`${lEvent}_${lIdKey}`,obj);
 
         }else
         if ( json.event == 'onmessage' && json.type == 'e2e_notification'){
-            gravaTxt('ONMESSAGE_E2ENOTIFICATION_'+json.id,obj);
+            //gravaTxt('ONMESSAGE_E2ENOTIFICATION_'+json.id,obj);
 
         }else
         if (json.event == 'onmessage' && json.isGroupMsg == false)  {            
@@ -290,31 +286,31 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             //dtMsg.setHours(dtMsg.getHours()-4);
             //console.log(dtMsg);
 
-            gravaTxt(`ONMESSAGE_${lIdKey}`,obj);
+            //gravaTxt(`ONMESSAGE_${lIdKey}`,obj);
         }else
         if (json.event == 'onmessage' && json.isGroupMsg == true)  {
             
             let novaPessoa = await addPessoa(json.notifyName, json.author);            
-            gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
+            //gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
         }        
         else
         if (json.event == 'onmessage' && json.from == "status@broadcast"){
             
             //let novaPessoa = await addPessoa(json.notifyName, json.author);            
-            gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
+            //gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
         }else
         if (json.event == 'onack' && json.from == "status@broadcast"){
             //let novaPessoa = await addPessoa(json.notifyName, json.author);
-            gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
+            //gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
         }else
         if (lEvent == 'onpresencechanged'){
-            gravaTxt('ONPRESENCECHANGED_'+json.id,obj);
+            //gravaTxt('ONPRESENCECHANGED_'+json.id,obj);
         }else
         if (lEvent == 'onrevokedmessage'){
-            gravaTxt('ONREVOKEDMESSAGE_'+json.id,obj);
+            //gravaTxt('ONREVOKEDMESSAGE_'+json.id,obj);
         }        
         else{
-            gravaTxt(lEvent.toLocaleUpperCase+'_'+lIdKey,obj);
+            //gravaTxt(lEvent.toLocaleUpperCase+'_'+lIdKey,obj);
         }
 
         if (lFromMe == true){

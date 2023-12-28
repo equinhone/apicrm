@@ -5,6 +5,9 @@ import pessoas, { Pessoa, PessoaInterface } from '../models/pessoa-model';
 import { ImportaContatosJson } from 'src/lib/ImportaContatosJson';
 import util from '../lib/util'
 import * as fs from 'fs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
 export const createPessoas = async (req: Request, res: Response) => {
@@ -101,8 +104,12 @@ export async function importaContato(req: Request, res: Response, next: NextFunc
     try{
         
         //const jsonString = fs.readFileSync('./import/response.json', 'utf-8');
+        //const response = await fetch('http://127.0.0.1:21465/api/nova/all-chats', {     
+        
 
-        const response = await fetch('http://127.0.0.1:21465/api/nova/all-chats', {
+        console.log(process.env.WPP_SERVER_API_PESSOAS as string)
+        
+        const response = await fetch(process.env.WPP_SERVER_API_PESSOAS as string, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -113,7 +120,7 @@ export async function importaContato(req: Request, res: Response, next: NextFunc
 
         const jsonString = await response.json();        
 
-        console.log(jsonString)
+        console.log(process.env.WPP_SERVER_API_PESSOAS as string)
 
         const jsonData = JSON.parse(JSON.stringify(jsonString));
         console.log('Contatos: '+jsonData.response.length)
@@ -185,7 +192,7 @@ export async function updatePessoasFoto(APessoaWpp:string, AUrl:string) {
         
         const sql = "update public.pessoas set foto='"+imageBase64+"' where wapp_id='"+APessoaWpp+"'" 
 
-        util.gravaTxt("update"+APessoaWpp+".sql",sql)
+        //util.gravaTxt("update"+APessoaWpp+".sql",sql)
 
         const results = await sequelize.query(sql,{type: QueryTypes.UPSERT});        
         
