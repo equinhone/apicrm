@@ -441,7 +441,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                         idKey: lIdKey,                    
                         arquivoNome:lCaption,
                         arquivoTipo: json.type,
-                        arquivoBase64: lBodyArquivo
+                        arquivoBase64: json.body
 
                     }).then(function (p) {
                         console.log('created.' + JSON.stringify(p));
