@@ -433,26 +433,32 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                 });
             } 
             
-            let existeArquivo = await WappArquivo.findOne({ 
-                where: { 
-                    idKey: lIdKey
-                } 
-            })
+            console.log("Tipo de Arquivo:")
+            console.log(json.type)
 
-            if (existeArquivo === null) {
-                const novoWappArquivoKey = 
-                WappArquivo.create({                    
-                    idKey: lIdKey,                    
-                    arquivoNome:'',
-                    arquivoTipo: json.type,
-                    arquivoBase64: lBody
+            if (json.type = 'image'){
+            
+                let existeArquivo = await WappArquivo.findOne({ 
+                    where: { 
+                        idKey: lIdKey
+                    } 
+                })
 
-                }).then(function (p) {
-                    console.log('created.' + JSON.stringify(p));
-                }).catch(function (err) {
-                    console.log('Falha: ' + err);
-                });
-            };
+                if (existeArquivo === null) {
+                    const novoWappArquivoKey = 
+                    WappArquivo.create({                    
+                        idKey: lIdKey,                    
+                        arquivoNome:'',
+                        arquivoTipo: json.type,
+                        arquivoBase64: lBody
+
+                    }).then(function (p) {
+                        console.log('created.' + JSON.stringify(p));
+                    }).catch(function (err) {
+                        console.log('Falha: ' + err);
+                    });
+                };
+            }
                 
         }
         res.status(200).json('OK');     
