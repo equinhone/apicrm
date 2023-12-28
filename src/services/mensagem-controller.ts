@@ -234,6 +234,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
         let lFrom:string = '';
         let lTo:string = '';
         let lBody:string = '';
+        let lBodyArquivo:string = '';
         let lCaption:string = '';
         let lDtMsg:Date = new Date();
         let lProsseguir:Boolean = false;
@@ -403,7 +404,8 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             if (existeMsg === null) {                             
                 
                 if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
-                    lBody = ''
+                    lBodyArquivo = lBody;
+                    lBody ='';                    
                 }               
                 
                 //console.log('Nao existe a msg')
@@ -440,8 +442,8 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             console.log("Tipo de Arquivo:")
             console.log(json.type)
 
-            if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
-            
+            //if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
+            if (lBodyArquivo.length > 0){ 
                 let existeArquivo = await WappArquivo.findOne({ 
                     where: { 
                         idKey: lIdKey
