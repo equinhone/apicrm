@@ -249,17 +249,18 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             
         if (json.event == 'onack' ){            
 
-            lIdKey  = json.id._serialized;
-            lFromMe = json.id.fromMe;
-            lFrom   = json.from;
-            lTo     = json.to;
-            lBody = json.body;
-            lCaption = json.caption;
-            lTipo = json.type;
-            lProsseguir = true;
-            lDtMsg = new Date(json.t * 1000)
-            lProsseguir = true;
-            lMimeType = json.mimetype;            
+            lIdKey       = json.id._serialized;
+            lFromMe      = json.id.fromMe;
+            lFrom        = json.from;
+            lTo          = json.to;
+            lBody        = json.body;
+            lBodyArquivo = json.body;
+            lCaption     = json.caption;
+            lTipo        = json.type;
+            lProsseguir  = true;
+            lDtMsg       = new Date(json.t * 1000)
+            lProsseguir  = true;
+            lMimeType    = json.mimetype;            
 
             //gravaTxt(`${lEvent}_${lIdKey}`,obj);
 
@@ -275,6 +276,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             lFrom    = json.from;
             lTo      = json.to;
             lBody    = json.body;
+            lBodyArquivo = json.body;
             lCaption = json.caption;
             lDtMsg = new Date(json.t * 1000)
             lMimeType = json.mimetype;
@@ -349,20 +351,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             }else{
                 lnovaPessoa = await addPessoa(json.notifyName, lPessoaWapp);                                        
                 //console.log("Pessoa registrada: "+ lnovaPessoa)                
-            }*/            
-
-            
-
-
-            /*console.log("From: "+lFrom)
-            console.log("To: "+lTo)
-            console.log("From Me: "+lFromMe)
-            console.log("ID Wapp: "+lIdWapp)
-            console.log("Pessoa Wapp: "+lPessoaWapp)
-            console.log("Pessoa ID: "+lnovaPessoa)
-            console.log(json.event)
-            console.log(lProsseguir)*/
-
+            }*/                      
             
             if (lFromMe == false){
                 verificaTicket(lnovaPessoa, lDtMsg);
@@ -377,8 +366,6 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             })
 
             if (existeMsgKey === null) {           
-                
-                //console.log('Nao existe a msg')
                 
                 const novoWappKey = 
                 WappKey.create({
@@ -403,8 +390,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
 
             if (existeMsg === null) {                             
                 
-                if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
-                    lBodyArquivo = lBody;
+                if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){                    
                     lBody ='';                    
                 }               
                 
@@ -442,8 +428,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             console.log("Tipo de Arquivo:")
             console.log(json.type)
 
-            //if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){
-            if (lBodyArquivo.length > 0){ 
+            if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){            
                 let existeArquivo = await WappArquivo.findOne({ 
                     where: { 
                         idKey: lIdKey
@@ -454,9 +439,9 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                     const novoWappArquivoKey = 
                     WappArquivo.create({                    
                         idKey: lIdKey,                    
-                        arquivoNome:'',
+                        arquivoNome:lCaption,
                         arquivoTipo: json.type,
-                        arquivoBase64: lBody
+                        arquivoBase64: lBodyArquivo
 
                     }).then(function (p) {
                         console.log('created.' + JSON.stringify(p));
