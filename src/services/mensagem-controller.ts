@@ -6,6 +6,7 @@ import { QueryTypes } from 'sequelize';
 import { sequelize } from '../db/db';
 import { Mensagem, MensagemAttributes } from '../services/mensagem-model';
 import { WappMensagem } from '../models/wapp_mensagem-model';
+import { WappArquivo } from '../models/wapp_arquivo-model';
 import { WappKey } from '../models/wapp_key-model'
 import { Pessoa } from '../models/pessoa-model';
 import util from '../lib/util'
@@ -430,7 +431,28 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                 }).catch(function (err) {
                     console.log('Falha: ' + err);
                 });
-            }               
+            } 
+            
+            let existeArquivo = await WappArquivo.findOne({ 
+                where: { 
+                    idKey: lIdKey
+                } 
+            })
+
+            if (existeArquivo === null) {
+                const novoWappArquivoKey = 
+                WappArquivo.create({                    
+                    idKey: lIdKey,                    
+                    arquivoNome:'',
+                    arquivoTipo: json.type,
+                    arquivoBase64: lBody
+
+                }).then(function (p) {
+                    console.log('created.' + JSON.stringify(p));
+                }).catch(function (err) {
+                    console.log('Falha: ' + err);
+                });
+            };
                 
         }
         res.status(200).json('OK');     
@@ -569,7 +591,9 @@ export async function addPessoa( AName:string, AWpp: string, AUrl:string='') {
             const buffer = Buffer.from(arrayBuffer);
             const imageBase64  = buffer.toString('base64');            
             
-            const sql = "update public.pessoas set foto='"+imageBase64+"' where id="+returnId
+            //const sql = "update public.pessoas set foto='"+imageBase64+"' where id="+returnId
+
+            const sql = "insert into public.pessoas_foto (pessoa, foto) values ("+returnId+"','"+imageBase64+"')'"
 
             const results = await sequelize.query(sql,{type: QueryTypes.UPSERT});
         }
