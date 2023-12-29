@@ -234,7 +234,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
         let lFrom:string = '';
         let lTo:string = '';
         let lBody:string = '';
-        let lBodyArquivo:string = '';
+        let lFileName:string = '';
         let lCaption:string = '';
         let lDtMsg:Date = new Date();
         let lProsseguir:Boolean = false;
@@ -254,7 +254,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             lFrom        = json.from;
             lTo          = json.to;
             lBody        = json.body;
-            lBodyArquivo = json.body;
+            lFileName    = json.filename;
             lCaption     = json.caption;
             lTipo        = json.type;
             lProsseguir  = true;
@@ -276,7 +276,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             lFrom    = json.from;
             lTo      = json.to;
             lBody    = json.body;
-            lBodyArquivo = json.body;
+            lFileName    = json.filename;
             lCaption = json.caption;
             lDtMsg = new Date(json.t * 1000)
             lMimeType = json.mimetype;
@@ -439,7 +439,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                     const novoWappArquivoKey = 
                     WappArquivo.create({                    
                         idKey: lIdKey,                    
-                        arquivoNome:lCaption,
+                        arquivoNome:lFileName,
                         arquivoTipo: json.type,
                         arquivoBase64: json.body
 

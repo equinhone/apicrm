@@ -16,7 +16,7 @@ const sequelizeWpp = new Sequelize(
         //dialect: 'postgres',
         //port: parseInt(process.env.WAA_PG_PORT as string),        
         dialect: 'postgres',
-        port: parseInt(process.env.PG_PORT as string),
+        port: parseInt(process.env.WAA_PG_PORT as string),
         dialectOptions: { 
             useUTC: false,
             timezone: '-04:00' // for reading the data
