@@ -11,6 +11,7 @@ import { WappKey } from '../models/wapp_key-model'
 import { Pessoa } from '../models/pessoa-model';
 import util from '../lib/util'
 import { Ticket } from '../models/ticket-model';
+import utilTickets, {} from '../lib/util-tickets';
 
 export const getMensagemAll = async (req: Request, res: Response) => {
 //export async function getMensagemAll(req: Request, res: Response, next: NextFunction) {
@@ -210,17 +211,6 @@ export async function getMensagem2() {
     }
 }
 
-const fs = require('fs/promises');
-
-async function gravaTxt(AFileName:String,AContent:String) {
-  try {
-    //const content = 'Some content!';
-    await fs.writeFile('C:/CRMAME/Node/'+AFileName+'.txt', AContent);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 export const getMensagemWpp = async (req: Request, res: Response, next: NextFunction) => {                 
     
     try{
@@ -230,25 +220,30 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
 
         let lEvent:string = '';
         let lIdKey:string = '';
+        let lIdKeyInt     = '';  
         let lFromMe:Boolean = false;
         let lFrom:string = '';
         let lTo:string = '';
         let lBody:string = '';
         let lFileName:string = '';
+        let lMediaKey:string = '';
         let lCaption:string = '';
+        let lLocalizacao:string = '';
         let lDtMsg:Date = new Date();
         let lProsseguir:Boolean = false;
         let lIdWapp:string;
         let lPessoaWapp:string;
         let lMimeType:string=''; 
         let lTipo:string='';
-        let lUrl:string ='';        
+        let lFotoHash:string='';
+        let lFotoUrl:string ='';
+        let lIdResposta:string='';
 
         lEvent = json.event;
-        console.log(lEvent)
+        //console.log(lEvent)
             
         if (json.event == 'onack' ){            
-
+            
             lIdKey       = json.id._serialized;
             lFromMe      = json.id.fromMe;
             lFrom        = json.from;
@@ -260,70 +255,102 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             lProsseguir  = true;
             lDtMsg       = new Date(json.t * 1000)
             lProsseguir  = true;
-            lMimeType    = json.mimetype;            
+            lMimeType    = json.mimetype;           
 
-            //gravaTxt(`${lEvent}_${lIdKey}`,obj);
+            util.gravaTxt(`${lEvent}_${lIdKey}`,obj);
 
         }else
         if ( json.event == 'onmessage' && json.type == 'e2e_notification'){
-            //gravaTxt('ONMESSAGE_E2ENOTIFICATION_'+json.id,obj);
+            util.gravaTxt('_ONMESSAGE_E2ENOTIFICATION_'+json.id,obj);
+            process.exit;
 
         }else
+        if ( json.event == 'onmessage' && json.type == 'notification_template'){
+            util.gravaTxt('_ONMESSAGE_NOTIFICATION_TEMPLATE_'+json.id,obj);
+            process.exit;
+
+        }
+        else
         if (json.event == 'onmessage' && json.isGroupMsg == false)  {            
             
-            lIdKey   = json.id;
-            lFromMe  = json.fromMe;
-            lFrom    = json.from;
-            lTo      = json.to;
-            lBody    = json.body;
+            lIdKey       = json.id;            
+            lFromMe      = json.fromMe;
+            lFrom        = json.from;
+            lTo          = json.to;
+            lBody        = json.body;
             lFileName    = json.filename;
-            lCaption = json.caption;
-            lDtMsg = new Date(json.t * 1000)
-            lMimeType = json.mimetype;
-            lProsseguir = true;
-            lUrl = json.sender.profilePicThumbObj.eurl             
-            
-            if (lUrl == undefined){
-                lUrl = '';
-            }
-            //console.log(dtMsg);
-            //dtMsg.setHours(dtMsg.getHours()-4);
-            //console.log(dtMsg);
+            lMediaKey    = json.mediaKey;
+            lCaption     = json.caption;
+            lLocalizacao = json.loc;
+            lDtMsg       = new Date(json.t * 1000)
+            lMimeType    = json.mimetype;
+            lProsseguir  = true;
 
-            //gravaTxt(`ONMESSAGE_${lIdKey}`,obj);
+            util.gravaTxt(`ONMESSAGE_${lIdKey}`,obj);
         }else
         if (json.event == 'onmessage' && json.isGroupMsg == true)  {
             
-            let novaPessoa = await addPessoa(json.notifyName, json.author);            
-            //gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
+            lIdKey       = json.id;
+            
+            lFromMe      = json.fromMe;
+            lFrom        = json.author;
+            lTo          = json.to;
+            lBody        = json.body;
+            lFileName    = json.filename;
+            lMediaKey    = json.mediaKey;
+            lCaption     = json.caption;
+            lLocalizacao = json.loc;
+            lDtMsg       = new Date(json.t * 1000)
+            lMimeType    = json.mimetype;
+            lProsseguir  = false;
+
+            //let novaPessoa = await addPessoa(json.notifyName, json.author);            
+            util.gravaTxt('_ONMESSAGE_GRUPO_'+json.id,obj);
         }        
         else
-        if (json.event == 'onmessage' && json.from == "status@broadcast"){
+        if (json.event == 'onmessage' && json.from == "status@broadcast"){            
             
-            //let novaPessoa = await addPessoa(json.notifyName, json.author);            
-            //gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
+            util.gravaTxt('_ONMESSAGE_GRUPO_'+json.id,obj);
+            process.exit;
         }else
         if (json.event == 'onack' && json.from == "status@broadcast"){
-            //let novaPessoa = await addPessoa(json.notifyName, json.author);
-            //gravaTxt('ONMESSAGE_GRUPO_'+json.id,obj);
+            //let novaPessoa = await addPessoa(json.notifyName, json.author);            
+            util.gravaTxt('_ONMESSAGE_GRUPO_'+json.id,obj);
+            process.exit;
         }else
         if (lEvent == 'onpresencechanged'){
-            //gravaTxt('ONPRESENCECHANGED_'+json.id,obj);
+            util.gravaTxt('_ONPRESENCECHANGED_'+json.id,obj);
+            process.exit;
         }else
         if (lEvent == 'onrevokedmessage'){
-            //gravaTxt('ONREVOKEDMESSAGE_'+json.id,obj);
+            util.gravaTxt('_ONREVOKEDMESSAGE_'+json.id,obj);
+            process.exit;
         }        
         else{
-            //gravaTxt(lEvent.toLocaleUpperCase+'_'+lIdKey,obj);
+            util.gravaTxt(lEvent.toLocaleUpperCase+'_'+lIdKey,obj);
         }
+        
+        if (json.hasOwnProperty('sender')){            
+            if (json.sender.hasOwnProperty('profilePicThumbObj')){                
+                lFotoUrl  = json.sender.profilePicThumbObj.eurl
+                lFotoHash =  json.sender.profilePicThumbObj.tag
 
-        if (lFromMe == true){
-            lIdWapp = lFrom
-            lPessoaWapp = lTo            
-        }else{
-            lIdWapp = lTo
-            lPessoaWapp = lFrom
-        }        
+                //console.log("Tipooff: "+typeof json.sender.profilePicThumbObj.eurl )
+            }            
+        } 
+        
+        lIdWapp = (lFromMe == true) ? lFrom : lTo;
+        lPessoaWapp = (lFromMe == true) ? lTo : lFrom;
+        
+        if (json.hasOwnProperty('quotedStanzaID')){            
+            let lParticipant = json.quotedParticipant;
+            lIdResposta = ((lIdWapp == lParticipant) ? 'true_':'false_') + json.quotedParticipant+'_'+json.quotedStanzaID   
+        }              
+       
+        if (json.hasOwnProperty('quotedMsgId')){            
+            //lIdResposta  = typeof json.quotedMsgId === 'undefined' ? lIdResposta : json.quotedMsgId;  
+            lIdResposta  = json.quotedMsgId;  
+        }              
         
         if (lTo == 'status@broadcast' || lFrom == 'status@broadcast' ){
             lProsseguir = false;
@@ -333,31 +360,31 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
             lProsseguir = false;
         }
 
+        let lPosition = lIdKey.indexOf('us_');
+        lIdKeyInt = lIdKey.substring(lPosition+3,lIdKey.length)        
+
         if (lProsseguir == true) { 
             
+            console.log("Id Wapp: "+lIdWapp)
+            console.log("Pessoa Wapp: "+lPessoaWapp)
+            console.log("Id Resposta: "+lIdResposta)
+            console.log("Foto Url: "+lFotoUrl)
+            console.log("Foto Hash: "+lFotoHash)            
+            
+            
             let lnovaPessoa: any
-            lnovaPessoa = await addPessoa(json.notifyName, lPessoaWapp, lUrl);
-            console.log("Pessoa ID: "+lnovaPessoa)           
+            lnovaPessoa = await addPessoa(json.notifyName, lPessoaWapp);
             
+            await updateFotoPessoa(lnovaPessoa, lFotoHash, lFotoUrl)
             
-            /*let findPessoa = await Pessoa.findOne({ 
-                where: { wapp_id: lPessoaWapp } 
-            })
-
-            
-            if(findPessoa){
-                lnovaPessoa = findPessoa.id
-                //console.log("Pessoa localizada:"+lnovaPessoa)
-            }else{
-                lnovaPessoa = await addPessoa(json.notifyName, lPessoaWapp);                                        
-                //console.log("Pessoa registrada: "+ lnovaPessoa)                
-            }*/                      
+            console.log("Wtt ID: "+lIdWapp)           
+            console.log("Me?: "+lFromMe)           
             
             if (lFromMe == false){
                 verificaTicket(lnovaPessoa, lDtMsg);
             }else{
                 atualizaTicket(lnovaPessoa, lDtMsg);
-            }            
+            }
             
             let existeMsgKey = await WappKey.findOne({ 
                 where: { 
@@ -376,10 +403,13 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                     msgJson: req.body
 
                 }).then(function (p) {
-                    console.log('created.' + JSON.stringify(p));
+                    console.log('created.');
+                    //console.log('created.' + JSON.stringify(p));
                 }).catch(function (err) {
                     console.log('Falha: ' + err);
                 });
+
+                
             }
 
             let existeMsg = await WappMensagem.findOne({ 
@@ -392,9 +422,12 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                 
                 if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){                    
                     lBody ='';                    
-                }               
-                
-                //console.log('Nao existe a msg')
+                }
+
+                if (json.type == 'location'){                    
+                    lCaption = lLocalizacao;                    
+                }
+
                 const novoWappMensagempKey = 
                 WappMensagem.create({
                     
@@ -409,7 +442,8 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                     tipo: json.type,
                     mimetype: lMimeType,
                     longitude: json.lat,
-                    latitude: json.lng
+                    latitude: json.lng,
+                    idKeyResposta: lIdResposta
                     //statusMensagem: number;
                     //mensagempadrao: number;
                     //dtstatus?: Date;
@@ -419,38 +453,36 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                     //botoes?: string;            
 
                 }).then(function (p) {
-                    console.log('created.' + JSON.stringify(p));
+                    console.log('created.');
                 }).catch(function (err) {
                     console.log('Falha: ' + err);
                 });
             } 
-            
-            console.log("Tipo de Arquivo:")
-            console.log(json.type)
 
             if (json.type == 'image' || json.type == 'document' || json.type == 'video' || json.type == 'ptt' ){            
-                let existeArquivo = await WappArquivo.findOne({ 
-                    where: { 
-                        idKey: lIdKey
-                    } 
-                })
-
-                if (existeArquivo === null) {
-                    const novoWappArquivoKey = 
-                    WappArquivo.create({                    
-                        idKey: lIdKey,                    
-                        arquivoNome:lFileName,
-                        arquivoTipo: json.type,
-                        arquivoBase64: json.body
-
-                    }).then(function (p) {
-                        console.log('created.' + JSON.stringify(p));
-                    }).catch(function (err) {
-                        console.log('Falha: ' + err);
-                    });
-                };
-            }
                 
+                console.log("Dados do Arquivo:")
+                console.log("Type: "+json.type)
+                console.log("MimeType: "+lMimeType)
+                console.log("Media Key: "+lMediaKey);
+
+                salvarArquivoWpp(lIdKey, lIdKeyInt, json.body, json.type, lMimeType,lFileName)
+                
+               
+            } 
+            
+            let lTicket: any
+            lTicket  = await utilTickets.getTicketId(lnovaPessoa);
+
+            //console.log("Pessoa: "+lnovaPessoa)
+            //console.log("Ticket: "+lTicket)
+            
+            /*setTimeout(() => {
+               utilTickets.getGerarHTMLChat(lPessoaWapp, lTicket,'0') ;
+            }, 500);*/
+            
+
+
         }
         res.status(200).json('OK');     
     } catch (error) {
@@ -458,34 +490,139 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
     }
 }
 
+async function salvarArquivoWpp( AIDKey:string,AId:string,ABody:string,AType:string,AMimeType:string,AFileName:string) {
+    try{
+        
+        let DirArquivo:string='';
+        let NomeArquivo:string='';
+        let lFileExtensao:string='';
+        let lPosition = -1;
+
+        console.log("FileName: "+AFileName)        
+        
+        if (!AFileName == undefined ){
+            if (AFileName.length > 0 ){
+                lPosition = AFileName.indexOf('.');
+                lFileExtensao = AFileName.substring(lPosition,AFileName.length)                
+            }
+        }else{
+            if(AMimeType.indexOf('word') > 0){
+                lFileExtensao = '.docx'
+            }
+            
+            if(AMimeType.indexOf('mp4') > 0){
+                lFileExtensao = '.mp4'
+            }
+            
+            if(AMimeType.indexOf('mpeg') > 0){
+                lFileExtensao = '.mpeg'
+            } 
+        }     
+        
+        console.log("Extensao: "+lFileExtensao)
+        
+        const fs = require("fs");                
+        const buffer = Buffer.from(ABody, "base64");
+        
+        var dirImage = './dist/temp/image/';
+        var dirDoc = './dist/temp/doc/';
+        var dirVideo = './dist/temp/video/';
+        var dirAudio = './dist/temp/audio/';           
+        
+        
+        if (AType == 'image'){                                        
+            NomeArquivo = AId+".jpeg";
+            DirArquivo = dirImage+NomeArquivo;
+            //fs.writeFileSync(dirImage+AId+".jpeg", buffer);
+        }       
+
+        if (AType == 'document'){                                                                        
+            NomeArquivo = AId+lFileExtensao;
+            DirArquivo = dirDoc+NomeArquivo;
+            //fs.writeFileSync(dirDoc+AId+lFileExtensao, buffer);
+        }
+
+        if (AType == 'video'){                                        
+            NomeArquivo = AId+lFileExtensao;
+            DirArquivo = dirVideo+NomeArquivo;
+            //fs.writeFileSync(dirVideo+AId+lFileExtensao, buffer);
+        }
+
+        if (AType == 'ptt'){                                        
+            
+            NomeArquivo = AId+".mp3";
+            DirArquivo = dirAudio+NomeArquivo;
+            //fs.writeFileSync(dirAudio+AId+".mp3", buffer);
+        }
+
+        fs.writeFileSync(DirArquivo, buffer);
+
+        let existeArquivo = await WappArquivo.findOne({ 
+            where: { 
+                idKey: AIDKey
+            } 
+        })
+
+        if (existeArquivo === null) {
+            const novoWappArquivoKey = 
+            WappArquivo.create({                    
+                idKey: AIDKey,                    
+                arquivoNome:NomeArquivo,
+                arquivoPath:DirArquivo,
+                arquivoTipo: AType,
+                arquivoBase64: ABody
+
+            }).then(function (p) {
+                console.log('created.');
+            }).catch(function (err) {
+                console.log('Falha: ' + err);
+            });
+        };    
+
+    }catch (error) {
+        console.log(error);    
+    }
+}
+
+
 async function verificaTicket( APessoa:string,AData:Date) {
     try{        
+        
+        console.log("Pessoa: "+APessoa)
+        console.log("Data: "+AData)
+        
         let ticket = await Ticket.findOne({ 
             where: { 
                 pessoa: APessoa, 
                 situacao: { [Op.or]: ['A','E'] }
             } 
-        })
-
-        //console.log(ticket)
+        })        
 
         if(ticket){
             console.log("Ticket encontrado")
             ticket.dtultimamsg = new Date();
             await ticket.save();
         }else{
-            console.log("Ticket Criado")
-            let ticket = await Ticket.create({                
-                usuario:1,
-                pessoa: APessoa,
-                situacao: 'E',
-                dtabertura:AData,
-                dtfechamento: null,
-                dtultimamsg: AData,
-                dtatendimento: null,
-                dtcancelamento: null,
-                motivoCancelamento: null
-            })            
+            
+            let lSql = ' select * from public.tickets_ignorados ti where ti.pessoa='+APessoa;
+            const results = await sequelize.query(lSql,{type: QueryTypes.SELECT})
+    
+            if(results.length > 0){
+                //res.status(200).json(results)
+            }else{
+                console.log("Ticket Criado")
+                let ticket = await Ticket.create({                
+                    usuario:1,
+                    pessoa: APessoa,
+                    situacao: 'E',
+                    dtabertura:AData,
+                    dtfechamento: null,
+                    dtultimamsg: AData,
+                    dtatendimento: null,
+                    dtcancelamento: null,
+                    motivoCancelamento: null
+                })      
+            }
         }
 
     } catch (error) {
@@ -515,7 +652,7 @@ async function atualizaTicket(APessoa:string,AData:Date) {
     }
 }
 
-export async function addPessoa( AName:string, AWpp: string, AUrl:string='') {
+export async function addPessoa( AName:string, AWpp: string) {
     
     let returnId; 
     
@@ -581,19 +718,31 @@ export async function addPessoa( AName:string, AWpp: string, AUrl:string='') {
             //console.log(pessoa)
         }
         
-        if (AUrl !== ''){
+        /*if (AUrl !== ''){
             const response = await fetch(AUrl);
             const blob = await response.blob();
             const arrayBuffer = await blob.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
             const imageBase64  = buffer.toString('base64');            
-            
-            //const sql = "update public.pessoas set foto='"+imageBase64+"' where id="+returnId
 
-            const sql = "insert into public.pessoas_foto (pessoa, foto) values ("+returnId+"','"+imageBase64+"')'"
+            const sqlVerifica = "select * from public.pessoas_foto pf where pf.pessoa="+returnId; 
 
-            const results = await sequelize.query(sql,{type: QueryTypes.UPSERT});
-        }
+            try{
+                const results = await sequelize.query(sqlVerifica,{type: QueryTypes.SELECT})                
+                
+                if(results.length > 0){
+                    let sqlUpdate = "update public.pessoas_foto set foto='"+imageBase64+"' where pessoa="+returnId;
+                    const results = await sequelize.query(sqlUpdate,{type: QueryTypes.UPSERT});
+                }else{
+                    //const sql = "update public.pessoas set foto='"+imageBase64+"' where id="+returnId
+
+                    let sqlInsere = "insert into public.pessoas_foto (pessoa, foto) values ("+returnId+",'"+imageBase64+"')";
+                    const results = await sequelize.query(sqlInsere,{type: QueryTypes.UPSERT});
+                }       
+            } catch (error) {
+                console.log('error');               
+            }          
+        }*/
 
         
         return returnId
@@ -602,9 +751,89 @@ export async function addPessoa( AName:string, AWpp: string, AUrl:string='') {
     }            
 }
 
+export async function updateFotoPessoa( APessoa:string, AHash:string, AUrl:string='') {   
+    
+
+    try {                      
+        
+        if (AUrl !== ''){
+            let lHash:string='';
+            const response     = await fetch(AUrl);
+            const blob         = await response.blob();
+            const arrayBuffer  = await blob.arrayBuffer();
+            const buffer       = Buffer.from(arrayBuffer);
+            
+            const imageBase64  = buffer.toString('base64'); 
+            
+            const fs = require("fs");
+            fs.writeFileSync('./dist/temp/contato/'+APessoa+'.jpg', buffer);
+            
+            const sqlVerifica = "select * from public.pessoas_foto pf where pf.pessoa="+APessoa;
+            
+            const results = await sequelize.query(sqlVerifica,{
+                type: QueryTypes.SELECT
+            
+
+            });
+        
+            if(results.length > 0){
+                let lObjJsonArquivo = JSON.parse(JSON.stringify(results));
+                lHash = lObjJsonArquivo[0].hash;
+            
+            }else{
+                console.log("nao tem foto");
+                lHash = '*12345678999999'
+            }
+
+            console.log("Pessoa: "+APessoa);
+            console.log("Tag: "+AHash);
+            console.log("Hash: "+lHash);
+            console.log("Url: "+AUrl);
+
+            if (!(AHash == lHash)) {            
+            
+                
+
+                try{
+                    if(results.length > 0){
+                        let sqlUpdate = "update public.pessoas_foto set foto='"+imageBase64+"', hash='"+ AHash +"' where pessoa="+APessoa;
+                        const lResults = await sequelize.query(sqlUpdate,{type: QueryTypes.UPSERT});
+                    }else{
+                        let sqlInsere = "insert into public.pessoas_foto (pessoa, foto) values ("+APessoa+",'"+imageBase64+"')";
+                        const lResults = await sequelize.query(sqlInsere,{type: QueryTypes.UPSERT});
+                    }       
+                } catch (error) {
+                    console.log('error');               
+                }    
+            }
+            
+            
+            /*.then(async function (p) {
+                if (p) {                                        
+                    let lObjJsonArquivo = JSON.parse(JSON.stringify(p));
+                    lHash = lObjJsonArquivo[0].hash;
+                }
+                console.log(AUrl);                
+            }).catch(function (err) {
+                console.log('Falha: ' + err);
+            }); */                 
+        }       
+        
+    } catch (err) {
+      console.log(err);
+    }            
+}
+
+
+export async function geraChat( AWppId:string) {
+
+
+}
+
 export default {
     getMensagem,
     getMensagemAll,
     getMensagem2,
     getMensagemWpp
+    
 }

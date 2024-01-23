@@ -3,15 +3,15 @@ import { DataTypes, Model } from 'sequelize';
 
 export interface WappMensagemAttributes extends Model {
   id: number;
-  idWapp: string;
-  idKey?: string;
+  idWapp?: string;
+  idKey: string;
   idFrom?: string;
-  idTo?: string;
-  dtmsg?: Date;
-  nome?: string;
-  msg?: string;
-  caption?: string;
-  tipo?: string;
+  idTo: string;
+  dtmsg: Date;
+  nome: string;
+  msg: string;
+  caption: string;
+  tipo: string;
   longitude?: string;
   latitude?: string;
   statusMensagem?: number;
@@ -24,6 +24,7 @@ export interface WappMensagemAttributes extends Model {
   mimetype?:string;
   fileName?:string;
   fileExtension?:string;
+  idKeyResposta?:string;
 }
 
 export const WappMensagem = sequelize.define<WappMensagemAttributes>('WappMensagem', {
@@ -127,7 +128,12 @@ export const WappMensagem = sequelize.define<WappMensagemAttributes>('WappMensag
       type: DataTypes.STRING(10),
       allowNull: true,
       field: 'file_extension'
-    }
+    },
+    idKeyResposta: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      field: 'id_key_resposta'
+    },
   }, {
     tableName: 'wapp_mensagem',
     schema: 'public',

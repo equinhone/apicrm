@@ -8,6 +8,7 @@ router.get('/', defaultController.getTickets);
 router.get('/atendimentos/', defaultController.getTicketsAtendimento);
 router.get('/espera/', defaultController.getTicketsEspera);
 router.get('/novo/:datainicio/:horainicio', defaultController.getNovoTicketsEspera);
+router.get('/atendimento/:datainicio/:horainicio', defaultController.getNovoTicketsAtendimento);
 router.get('/ticket/:id', defaultController.getTicket);
 
 router.post('/', defaultController.createTicket);

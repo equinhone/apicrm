@@ -9,8 +9,11 @@ const router = express.Router();
 });*/
 
 router.get('/', pessoaController.getPessoas);
+router.get('/frete', pessoaController.getFrete);
 router.get('/:id', pessoaController.getPessoa);
+
 router.get('/foto/:id', pessoaController.getFoto);
+
 router.post('/importa', pessoaController.importaContato);
 
 router.post('/', pessoaController.createPessoas);

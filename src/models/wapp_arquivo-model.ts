@@ -7,9 +7,10 @@ export interface WappArquivoAttributes extends Model {
   arquivo?: any;
   arquivoNome?: string;
   arquivoTipo?: string;
-  arquivoBase64?: string;
-  arquivoPath?: string;
+  arquivoBase64: string;
+  arquivoPath: string;
 }
+
 export const WappArquivo = sequelize.define<WappArquivoAttributes>('WappArquivo', {  
   id: {
     autoIncrement: true,

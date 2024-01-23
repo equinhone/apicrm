@@ -8,14 +8,27 @@ function somenteNumeros(atext: string) {
     return parseInt(numbers);
 }
 
+
+
+  //const fs = require('fs/promises');
+
 async function gravaTxt(AFileName:String,AContent:String) {
+  try {
+    //const content = 'Some content!';
+    await fs.writeFile('./dist/temp/msgs/'+AFileName+'.txt', AContent);
+  } catch (err) {
+    console.log(err);
+  }
+}
+  
+async function gravaHTML(AFileName:String,AContent:String) {
     try {
       //const content = 'Some content!';
-      await fs.writeFile('C:/CRMAME/Node/'+AFileName+'.txt', AContent);
+      await fs.writeFile('./dist/temp/chats/'+AFileName+'.html', AContent);
     } catch (err) {
       console.log(err);
     }
-  }
+}
 
 
 
@@ -66,7 +79,8 @@ async function imageUrlToBase64DataUrl(AUrl:string) {
     imageUrlToBase64DataUrl,
     somenteNumeros,
     downloadImageUrl,
-    gravaTxt
+    gravaTxt,
+    gravaHTML
 }
 
 

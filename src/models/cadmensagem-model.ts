@@ -9,7 +9,7 @@ export interface CadMensagemAttributes extends Model {
   texto?: string;
   imagem64?: string;
   imagemTipo?: string;
-  imagemHash?: string;
+  //imagemHash?: string;
   botao?: string;
   dtinclusao?: Date;
   dtedicao?: Date;
@@ -50,11 +50,11 @@ export const CadMensagem = sequelize.define<CadMensagemAttributes>('CadMensagem'
       allowNull: true,
       field: 'imagem_tipo'
     },
-    imagemHash: {
+    /*imagemHash: {
       type: DataTypes.STRING(100),
       allowNull: true,
       field: 'imagem_hash'
-    },
+    },*/
     botao: {
       type: DataTypes.TEXT,
       allowNull: true

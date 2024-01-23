@@ -51,6 +51,8 @@ app.use('/wppmensagem',wpp_mensagemRouter);
 app.use('/wppkey',wpp_keyRouter);
 app.use('/service',mensagemServiceRouter);
 
+CriaDiretorios();
+
 //console.log('Isto aqui vai ser executado a cada 5 minutos'+ ; 
 /*setInterval(function () { 
     console.log('Isto aqui vai ser executado a cada 5 minutos'); 
@@ -75,4 +77,57 @@ function VerificarMensagem(){
     var segundos = 1;
     const verificaMensagem = mensagemService.getMensagem2()
 }
+
+function CriaDiretorios(){
+    const fs = require("fs");                    
+    
+    if (!fs.existsSync('./dist')){
+        fs.mkdirSync('./dist');
+    }
+
+    if (!fs.existsSync('./dist/temp')){
+        fs.mkdirSync('./dist/temp');
+    }                
+
+    if (!fs.existsSync('./dist/temp/contato')){
+        fs.mkdirSync('./dist/temp/contato');
+    } 
+
+    if (!fs.existsSync('./dist/temp/msgs')){
+        fs.mkdirSync('./dist/temp/msgs');
+    } 
+
+    if (!fs.existsSync('./dist/temp/chats')){
+        fs.mkdirSync('./dist/temp/chats');
+    } 
+    
+    var dirImage = './dist/temp/image/';
+    var dirDoc = './dist/temp/doc/';
+    var dirVideo = './dist/temp/video/';
+    var dirAudio = './dist/temp/audio/';
+
+    if (!fs.existsSync(dirImage)){
+        fs.mkdirSync(dirImage);
+    }
+
+    if (!fs.existsSync(dirDoc)){
+        fs.mkdirSync(dirDoc);
+    }
+
+    if (!fs.existsSync(dirVideo)){
+        fs.mkdirSync(dirVideo);
+    }
+
+    if (!fs.existsSync(dirAudio)){
+        fs.mkdirSync(dirAudio);
+    }
+
+
+
+
+
+
+}
+
+
 

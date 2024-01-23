@@ -7,7 +7,7 @@ export interface TicketAttributes extends Model {
   usuario?: number;
   pessoa: number;
   situacao?: string;
-  dtabertura?: Date;
+  dtabertura: Date;
   dtfechamento?: Date;
   dtultimamsg?: Date;
   dtatendimento?: Date;

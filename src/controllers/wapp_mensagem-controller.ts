@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryTypes } from 'sequelize';
 import { WappMensagem, WappMensagemAttributes } from '../models/wapp_mensagem-model';
+import { WappArquivo, WappArquivoAttributes } from '../models/wapp_arquivo-model';
+//import ticket, { Ticket, TicketAttributes } from '../models/ticket-model';
 import { sequelize } from '../db/db';
+import util from '../lib/util'
+//import { now } from 'moment-timezone';
+import utilTickets, {} from '../lib/util-tickets'
+
 
 export const create = async (req: Request, res: Response) => {
     try{
@@ -121,24 +127,51 @@ export const getMensagemChat = async (req: Request, res: Response) => {
     let { opcao } = req.params;
     
     try {
+        
+        await utilTickets.getGerarHTMLChat(id,ticket,opcao)
+        res.status(200).json("OK") 
+        
         //let lParam = req.params.situacao;
-        let sql = 
-        "select * from wapp_mensagem wm "+
+        /*let lProsseguir=false;
+        let lSqlOpcao = '';
+        let lSqlOpcaoBasica = "and wm.dtmsg >= (select t.dtabertura from tickets t where t.id="+ticket+") ";
+        let lSqlOrder = 'order by wm.dtmsg';
+        let lSqlConsulta='';
+        let lSql =         
+        "select wm.* from wapp_mensagem wm "+
         "where (wm.id_from = "+"'"+ id +"'"+" or wm.id_to ="+"'"+ id +"'"+") ";
 
-        if (opcao == '0'){
-            sql = sql + "and wm.dtmsg >= (select t.dtabertura from tickets t where t.id="+ticket+") ";
+        if (opcao == '0'){            
+            lSqlConsulta = lSql + lSqlOpcaoBasica + lSqlOrder
         }
 
-        sql = sql + "order by wm.dtmsg"
+        if (opcao == '1'){                        
+            lSqlOpcao = "and wm.dtmsg >= NOW() - INTERVAL '3 DAY' ";
+            lSqlConsulta = lSql + lSqlOpcao + lSqlOrder
+        }        
 
-        const results = await sequelize.query(sql,{type: QueryTypes.SELECT})
+        let results = await sequelize.query(lSqlConsulta,{type: QueryTypes.SELECT})
  
         if(results.length > 0){
-            res.status(200).json(results)
+            lProsseguir = true;            
+        }else{         
+            let lSqlConsulta = lSql + lSqlOpcaoBasica + lSqlOrder
+            results = await sequelize.query(lSqlConsulta,{type: QueryTypes.SELECT})            
+            if(results.length > 0){
+                lProsseguir = true; 
+            }
+        }
+
+        //console.log(results.length)
+        if (lProsseguir) {
+            //console.log(results.length)
+            //await utilTickets.getGerarHTMLChat(id,ticket,'')  
+            //await utilTickets.getGerarHTMLChat(id,ticket,JSON.stringify(results))            
+            res.status(200).json("OK")
         }else{
             res.status(204).json({error: 'registro não localizado'})
-        }
+        }*/
+
       } catch (error) {
         console.log(error);
         res.send(error).status(500);
@@ -153,4 +186,5 @@ export default {
     updateId,
     deleteId,
     getMensagemChat
+    
 }

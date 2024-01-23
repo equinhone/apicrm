@@ -73,7 +73,7 @@ export const getId = async (req: Request, res: Response) => {
 export async function getImagemId(req: Request, res: Response, next: NextFunction) {
 
     let lParam = req.params.id;
-    let sql = 'select imagem_tipo, imagem_hash, imagem64 from cad_mensagem where id='+lParam+' limit 1' as string;   
+    let sql = 'select imagem_tipo, imagem64 from cad_mensagem where id='+lParam+' limit 1' as string;   
     
     try{
         const results = await sequelize.query(sql,{type: QueryTypes.SELECT})        

@@ -6,6 +6,7 @@ import { ImportaContatosJson } from 'src/lib/ImportaContatosJson';
 import util from '../lib/util'
 import * as fs from 'fs';
 import dotenv from 'dotenv';
+import { addPessoa } from 'src/services/mensagem-controller';
 
 dotenv.config();
 
@@ -80,7 +81,8 @@ export const deletePessoas = async (req: Request, res: Response) => {
 export async function getFoto(req: Request, res: Response, next: NextFunction) {
 
     let id  = req.params.id;
-    let sql = 'select p.foto from public.pessoas p where p.id='+id;   
+    //let sql = 'select p.foto from public.pessoas p where p.id='+id;
+    let sql = 'select pf.foto from pessoas_foto pf where pf.pessoa='+id;
     
     try{
         const results = await sequelize.query(sql,{type: QueryTypes.SELECT})        
@@ -96,9 +98,6 @@ export async function getFoto(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-import {addPessoa} from '../services/mensagem-controller'
-
-
 export async function importaContato(req: Request, res: Response, next: NextFunction) {    
     
     try{
@@ -107,7 +106,7 @@ export async function importaContato(req: Request, res: Response, next: NextFunc
         //const response = await fetch('http://127.0.0.1:21465/api/nova/all-chats', {     
         
 
-        console.log(process.env.WPP_SERVER_API_PESSOAS as string)
+        //console.log(process.env.WPP_SERVER_API_PESSOAS as string)
         
         const response = await fetch(process.env.WPP_SERVER_API_PESSOAS as string, {
             method: 'GET',
@@ -120,10 +119,10 @@ export async function importaContato(req: Request, res: Response, next: NextFunc
 
         const jsonString = await response.json();        
 
-        console.log(process.env.WPP_SERVER_API_PESSOAS as string)
+        //console.log(process.env.WPP_SERVER_API_PESSOAS as string)
 
         const jsonData = JSON.parse(JSON.stringify(jsonString));
-        console.log('Contatos: '+jsonData.response.length)
+        //console.log('Contatos: '+jsonData.response.length)
         if (jsonData.response != null){
             for (var i = 0; i < jsonData.response.length; i++) {
             //for (var i = 0; i < 15; i++) {
@@ -160,12 +159,12 @@ export async function importaContato(req: Request, res: Response, next: NextFunc
                         lName = jsonData.response[i].id.user
                     }                    
                     
-                    await addPessoa(lName,lWapp,'')
+                    await addPessoa(lName,lWapp)
                     
                     if ( lUrl !== null && lUrl !== '' ){
                         const lFileName:string = './assets/pessoas/' + jsonData.response[i].id.user + '.jpeg' 
-                        console.log(lUrl)
-                        console.log(lFileName)
+                        //console.log(lUrl)
+                        //console.log(lFileName)
                         await util.downloadImageUrl(lUrl,lFileName)                        
                         await updatePessoasFoto(lWapp,lUrl)
                     }
@@ -202,6 +201,50 @@ export async function updatePessoasFoto(APessoaWpp:string, AUrl:string) {
     } 
 }
 
+export async function getFrete(req: Request, res: Response, next: NextFunction) {        
+
+    try {
+        const options = {
+            method: 'POST',
+            headers: {
+              accept: 'application/json',
+              'User-Agent': 'Nome e versão da aplicação (email para contato técnico)',
+              'content-type': 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDU2MjU4MDgsInN1YiI6ImRaNVNXU1ZpUmVTTm9CYnZrNlhzSTdVNlBQSDMifQ.c_E_VTZanl5MMAjBXtdbQffwuDyTgu1bbaEdZFF2Hgw'
+            },
+            body: JSON.stringify({
+              from: {postal_code: '78065070'},
+              to: {postal_code: '20020050'},
+              services: '1,2,17',
+              options: {
+                own_hand: false,
+                receipt: false,
+                insurance_value: 0,
+                use_insurance_value: false
+              },
+              package: {height: 2, width: 11, length: 16, weight: 0.3}
+            })
+          };
+          
+          fetch('https://sandbox.superfrete.com/api/v0/calculator', options)
+            .then(response => response.json())
+            .then(response => res.send(response).status(200))
+            .catch(err => console.error(err));
+
+        
+        
+        
+        
+        
+        
+      
+        
+    } catch (error) {
+        console.log(error)
+        
+    } 
+}
+
 export default {
     createPessoas,
     getPessoas,
@@ -210,5 +253,6 @@ export default {
     updatePessoas,
     deletePessoas,
     updatePessoasFoto,
-    importaContato
+    importaContato,
+    getFrete
 }

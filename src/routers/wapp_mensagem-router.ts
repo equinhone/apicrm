@@ -14,6 +14,7 @@ router.post('/', defaultController.create);
 router.put('/:id', defaultController.updateId);
 router.delete('/:id', defaultController.deleteId);
 router.get('/mensagem/:id/:ticket/:opcao', defaultController.getMensagemChat);
+//router.get('/mensagem2/:id/:ticket/:opcao', defaultController.getGerarHTMLChat);
 router.get('/all/:filter', defaultController.getAllFilter);
 
 export default router;

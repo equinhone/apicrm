@@ -113,6 +113,26 @@ export async function getTicketsEspera(req: Request, res: Response, next: NextFu
     }
 }
 
+export async function getNovoTicketsAtendimento(req: Request, res: Response, next: NextFunction) {
+    let  lDataInicio = req.params.datainicio as string;    
+    let  lHoraInicio = req.params.horainicio as string; 
+    //let  lData:Date = new Date(lDataInicio)   ;
+    let sql = "select * from vwticketsatendimento te where te.dtabertura>='"+lDataInicio+ " "+lHoraInicio+"' or te.dtultimamsg>='"+lDataInicio+ " "+lHoraInicio+"'"            
+
+    try{
+        const results = await sequelize.query(sql,{type: QueryTypes.SELECT})        
+        
+        if(results.length > 0){
+            res.status(200).json(results)
+        }else{
+            res.status(201).json({error: 'nao encontrado'})            
+        }       
+    } catch (error) {
+        console.log('error');
+        res.send(error).status(500);
+    }
+}
+
 export async function getNovoTicketsEspera(req: Request, res: Response, next: NextFunction) {
     let  lDataInicio = req.params.datainicio as string;    
     let  lHoraInicio = req.params.horainicio as string; 
@@ -168,6 +188,7 @@ export default {
     deleteTicket,
     getTicketsAtendimento,
     getTicketsEspera,
+    getNovoTicketsAtendimento,
     getNovoTicketsEspera,
     iniciarAtendimentoTicket,
     encerrartendimentoTicket
