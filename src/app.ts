@@ -15,6 +15,7 @@ import cadmensagemRouter from './routers/cadmensagem-router';
 import cadmensagemcategoriaRouter from './routers/cadmensagem-categoria-router';
 import wpp_mensagemRouter from './routers/wapp_mensagem-router';
 import wpp_keyRouter from './routers/wapp_key-router';
+import rotaCampanhas from './routers/campanhas-router'
 
 
 
@@ -50,6 +51,7 @@ app.use('/cadmensagemcategoria',cadmensagemcategoriaRouter);
 app.use('/wppmensagem',wpp_mensagemRouter);
 app.use('/wppkey',wpp_keyRouter);
 app.use('/service',mensagemServiceRouter);
+app.use('/campanhas',rotaCampanhas)
 
 CriaDiretorios();
 

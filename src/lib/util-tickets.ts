@@ -33,7 +33,7 @@ export async function getPessoaId( AWhatsID:string ){
     
     try{
         let findPessoa = await Pessoa.findOne({ 
-            attributes: ['id'],  
+            //attributes: ['id'],  
             where: { wapp_id: AWhatsID} 
         })
         
@@ -82,12 +82,12 @@ export async function getGerarHTMLChat( AId:string, ATicket: string, AOpcao:stri
         }
         
         
-        console.log("Prosseguir: "+lProsseguir)
+        //console.log("Prosseguir: "+lProsseguir)
         //console.log("Objeto: "+lObjJsonString)
         if (lProsseguir){
 
             
-            util.gravaTxt('_CHAT'+AId,lObjJsonString);
+            //util.gravaTxt('_CHAT'+AId,lObjJsonString);
             
             let lObjJson = JSON.parse(lObjJsonString);
             let lId = util.somenteNumeros(AId).toString();
@@ -123,6 +123,10 @@ export async function getGerarHTMLChat( AId:string, ATicket: string, AOpcao:stri
                     let lIdFrom = lObjJson[i].id_from;
                     let lDtMsg = lObjJson[i].dtmsg;//.toISOString().replace(/T/, ' ').replace(/\..+/, '');
                     let lMsg = lObjJson[i].msg;
+
+                    //lMsg = lMsg.replace(/\n/g, "<br />");                   
+                    
+                    
                     let lCaption = lObjJson[i].caption;
                     let lArquivoPath = '';
                     let lArquivoBase64 = '';

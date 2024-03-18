@@ -1,8 +1,9 @@
+require('dotenv').config();
 module.exports ={
   "development": {
     "username": "ame",
     "password": "desenv2023",
-    "database": "crmame",
+    "database": "crmamed",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
@@ -14,11 +15,11 @@ module.exports ={
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "ame",
+    "password": "desenv2023",
+    "database": "crmame",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }
 

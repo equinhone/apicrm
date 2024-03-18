@@ -6,7 +6,7 @@ import { ImportaContatosJson } from 'src/lib/ImportaContatosJson';
 import util from '../lib/util'
 import * as fs from 'fs';
 import dotenv from 'dotenv';
-import { addPessoa } from 'src/services/mensagem-controller';
+//import { addPessoa } from '../../src/services/mensagem-controller';
 
 dotenv.config();
 
@@ -159,7 +159,7 @@ export async function importaContato(req: Request, res: Response, next: NextFunc
                         lName = jsonData.response[i].id.user
                     }                    
                     
-                    await addPessoa(lName,lWapp)
+                    //await addPessoa(lName,lWapp)
                     
                     if ( lUrl !== null && lUrl !== '' ){
                         const lFileName:string = './assets/pessoas/' + jsonData.response[i].id.user + '.jpeg' 

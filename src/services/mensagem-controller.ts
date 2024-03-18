@@ -365,11 +365,11 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
 
         if (lProsseguir == true) { 
             
-            console.log("Id Wapp: "+lIdWapp)
+            /*console.log("Id Wapp: "+lIdWapp)
             console.log("Pessoa Wapp: "+lPessoaWapp)
             console.log("Id Resposta: "+lIdResposta)
             console.log("Foto Url: "+lFotoUrl)
-            console.log("Foto Hash: "+lFotoHash)            
+            console.log("Foto Hash: "+lFotoHash) */           
             
             
             let lnovaPessoa: any
@@ -392,7 +392,7 @@ export const getMensagemWpp = async (req: Request, res: Response, next: NextFunc
                 } 
             })
 
-            if (existeMsgKey === null) {           
+            if (!existeMsgKey) {           
                 
                 const novoWappKey = 
                 WappKey.create({
@@ -834,6 +834,8 @@ export default {
     getMensagem,
     getMensagemAll,
     getMensagem2,
-    getMensagemWpp
+    getMensagemWpp,
+    addPessoa
+    
     
 }
