@@ -99,7 +99,10 @@ export const Pessoa = sequelize.define<PessoaInterface>('Pessoa', {
     }, 
     wapp_id: {
         type: DataTypes.STRING
-    }, 
+    },
+    wapp_valido: {
+        type: DataTypes.STRING
+    },  
     bling_id: {
         type: DataTypes.STRING
     }, 
