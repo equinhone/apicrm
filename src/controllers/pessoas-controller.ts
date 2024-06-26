@@ -15,6 +15,8 @@ export const createPessoas = async (req: Request, res: Response) => {
     
     //let pessoasInclusao = req.body as PessoaInterface;    
     //let pessoa = await Pessoa.create(pessoasInclusao);
+    //console.log(req.body)
+    
     let pessoa = await Pessoa.create(req.body);
 
     if (pessoa) {
@@ -29,8 +31,7 @@ export const getPessoas = async (req: Request, res: Response) => {
     let pessoas = await Pessoa.findAll({
         order:[['id','asc']]
     })
-    res.status(200);
-    res.json(pessoas)    
+    res.status(200).json(pessoas)    
 }
 
 export const getPessoa = async (req: Request, res: Response) => {    

@@ -41,45 +41,58 @@ export const Pessoa = sequelize.define<PessoaInterface>('Pessoa', {
     //}, 
     enviarmsg: {
         type: DataTypes.STRING
+        ,defaultValue: 'S'
     }, 
     cnpj: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     ie: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     endereco: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     endereco_numero: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     endereco_bairro: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     endereco_cidade: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     endereco_cep: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     endereco_uf: {
         type: DataTypes.STRING
+        ,defaultValue: null
     },
     endereco_comp: {
         type: DataTypes.STRING
+        ,defaultValue: null
     },
     fone: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     celular: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     email: {
         type: DataTypes.STRING
     }, 
     site: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     dtinclusao: {
         type: DataTypes.DATE,
@@ -87,24 +100,31 @@ export const Pessoa = sequelize.define<PessoaInterface>('Pessoa', {
     }, 
     dtedicao: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     dtinativacao: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     dtultimopedido: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: null
     }, 
     dtimportacao: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: null
     }, 
     wapp_id: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        defaultValue: null
     },
     wapp_valido: {
         type: DataTypes.STRING
+        ,defaultValue: 'N'
     },  
     bling_id: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     pessoa_cliente: {
         type: DataTypes.STRING,
@@ -112,8 +132,7 @@ export const Pessoa = sequelize.define<PessoaInterface>('Pessoa', {
     }, 
     pessoa_fornecedor: {
         type: DataTypes.STRING,
-        defaultValue: "N",
-
+        defaultValue: "N"
     }, 
     pessoa_transportador: {
         type: DataTypes.STRING,
@@ -137,13 +156,29 @@ export const Pessoa = sequelize.define<PessoaInterface>('Pessoa', {
     }, 
     celular_ddi: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     celular_ddd: {
         type: DataTypes.STRING
+        ,defaultValue: null
     }, 
     celular_numero: {
         type: DataTypes.STRING
+        ,defaultValue: null
+    },    
+    amezap_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: 'amezap_id',
+        defaultValue: null
+
     },
+    estrangeiro: {
+        type: DataTypes.STRING(1),
+        allowNull: true,
+        field: 'estrangeiro',
+        defaultValue: 'N'
+    }
 }, {
     tableName: 'pessoas',
     timestamps: false
