@@ -21,7 +21,13 @@ const sequelizeWpp = new Sequelize(
             useUTC: false,
             timezone: '-04:00' // for reading the data
         },
-        timezone: '-04:00' // for writing the data
+        timezone: '-04:00', // for writing the data
+        pool: {
+          max: 5,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+        }
     }
 );
 

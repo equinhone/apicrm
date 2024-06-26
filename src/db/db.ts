@@ -13,7 +13,8 @@ export const
 sequelize = new Sequelize(
     process.env.PG_DB as string,
     process.env.PG_USER as string,
-    process.env.PG_PASSWORD as string,
+    process.env.PG_PASSWORD as string,   
+    
     {        
         //host: process.env.PG_HOST as string,
         dialect: 'postgres',
@@ -22,9 +23,29 @@ sequelize = new Sequelize(
             useUTC: false,
             timezone: '-04:00' // for reading the data
         },
-        timezone: '-04:00' // for writing the data
+        timezone: '-04:00', // for writing the data
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+          }      
     }
+
+    
 );
+
+console.info('SETUP - Connecting database principal...')
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.info('INFO - Database principal connected.')
+  })
+  .catch(err => {
+    console.error('ERROR - Unable to connect to the database principal :', err)
+  })
+
 
 /*sequelize.authenticate()
 .then(auth => {

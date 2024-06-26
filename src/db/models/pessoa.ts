@@ -41,11 +41,18 @@ export interface PessoaAttributes {
   celularDdi?: string;
   celularDdd?: string;
   celularNumero?: string;
+  amezap_id?:string;
+  estrangeiro?:string;
 }
 
 export type PessoaPk = "id";
 export type PessoaId = Pessoa[PessoaPk];
-export type PessoaOptionalAttributes = "id" | "usuario" | "nome" | "fantasia" | "apelido" | "tipo" | "ativo" | "foto" | "enviarmsg" | "cnpj" | "ie" | "endereco" | "enderecoNumero" | "enderecoBairro" | "enderecoCidade" | "enderecoCep" | "enderecoUf" | "enderecoComp" | "fone" | "celular" | "email" | "site" | "dtinclusao" | "dtedicao" | "dtinativacao" | "dtultimopedido" | "dtimportacao" | "wappId" | "blingId" | "pessoaCliente" | "pessoaFornecedor" | "pessoaTransportador" | "pessoaVendedor" | "pessoaLead" | "pessoaFuncionario" | "pessoaRevenda" | "celularDdi" | "celularDdd" | "celularNumero";
+export type PessoaOptionalAttributes = "id" | "usuario" | "nome" | "fantasia" | "apelido" | "tipo" | "ativo" | "foto" | "enviarmsg" | "cnpj" | "ie" | 
+                                       "endereco" | "enderecoNumero" | "enderecoBairro" | "enderecoCidade" | "enderecoCep" | "enderecoUf" | "enderecoComp" | 
+                                       "fone" | "celular" | "email" | "site" | "dtinclusao" | "dtedicao" | "dtinativacao" | "dtultimopedido" | "dtimportacao" | 
+                                       "wappId" | "blingId" | "pessoaCliente" | "pessoaFornecedor" | "pessoaTransportador" | "pessoaVendedor" | "pessoaLead" | 
+                                       "pessoaFuncionario" | "pessoaRevenda" | "celularDdi" | "celularDdd" | "celularNumero" | "amezap_id" | "estrangeiro";
+
 export type PessoaCreationAttributes = Optional<PessoaAttributes, PessoaOptionalAttributes>;
 
 export class Pessoa extends Model<PessoaAttributes, PessoaCreationAttributes> implements PessoaAttributes {
@@ -88,6 +95,8 @@ export class Pessoa extends Model<PessoaAttributes, PessoaCreationAttributes> im
   celularDdi?: string;
   celularDdd?: string;
   celularNumero?: string;
+  amezap_id?:string;
+  estrangeiro?:string;
 
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Pessoa {
@@ -267,7 +276,18 @@ export class Pessoa extends Model<PessoaAttributes, PessoaCreationAttributes> im
       type: DataTypes.STRING(10),
       allowNull: true,
       field: 'celular_numero'
+    },
+    amezap_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'amezap_id'
+    },
+    estrangeiro: {
+      type: DataTypes.STRING(1),
+      allowNull: true,
+      field: 'estrangeiro'
     }
+
   }, {
     sequelize,
     tableName: 'pessoas',

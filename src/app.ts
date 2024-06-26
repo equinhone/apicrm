@@ -55,6 +55,7 @@ app.use('/campanhas',rotaCampanhas)
 
 CriaDiretorios();
 
+
 //console.log('Isto aqui vai ser executado a cada 5 minutos'+ ; 
 /*setInterval(function () { 
     console.log('Isto aqui vai ser executado a cada 5 minutos'); 
@@ -123,12 +124,6 @@ function CriaDiretorios(){
     if (!fs.existsSync(dirAudio)){
         fs.mkdirSync(dirAudio);
     }
-
-
-
-
-
-
 }
 
 
