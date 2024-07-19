@@ -9,14 +9,14 @@ const router = express.Router();
 });*/
 
 router.get('/', controller.getAll);
-router.get('/pessoas/:id', controller.getAllPessoas);
-
 router.get('/:id', controller.getId);
 router.post('/', controller.create);
-router.post('/pessoa', controller.createChild);
 router.put('/:id', controller.updateId);
 router.delete('/:id', controller.deleteId);
-router.delete('/pessoa/:campanha/:pessoa', controller.deletePessoa);
+
+router.get('/pessoas/:id', controller.getAllPessoas);
+router.post('/pessoas', controller.createChild);
+router.delete('/pessoas/:campanha/:pessoa', controller.deletePessoa);
 
 
 export default router;

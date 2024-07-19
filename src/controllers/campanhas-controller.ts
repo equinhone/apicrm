@@ -26,31 +26,33 @@ export const create = async (req: Request, res: Response) => {
 
 export const createChild = async (req: Request, res: Response) => {
     try{
-        const body = req.body;
-        let registroInclusao = body as CampanhasPessoasAttributes;    
+        //const body = req.body;
+        //let registroInclusao = body as CampanhasPessoasAttributes;
+        
+        //console.log('erroooooo')
         
         //let pessoa = await Pessoa.create(pessoasInclusao);
         
-        let findPessoa = await CampanhasPessoas.findOne({ 
+        /*let findPessoa = await CampanhasPessoas.findOne({ 
             //attributes: ['id'],  
             where: { id_campanhas: registroInclusao.id_campanhas,
                      id_pessoas: registroInclusao.id_pessoas} 
-        })
+        })*/        
 
-        if(!findPessoa){
-            let result = await CampanhasPessoas.create(req.body);        
-
+        //if(!findPessoa){
+            let result = await CampanhasPessoas.create(req.body); 
+            
             if (result) {
-                res.status(200).json(result);    
+                res.status(201).json(result).end();    
             } else {
-                res.status(500);
+                res.status(401).end;
             }
-        }else{
-            res.status(200).json(findPessoa); 
-        }
+        //}else{
+        //    res.status(200).json(findPessoa); 
+        //}
     } catch (error) {
-        console.log(error);
-        res.send(error).status(500);
+        //console.log(error);
+        res.status(500).send(error).end();
     }        
 }
 

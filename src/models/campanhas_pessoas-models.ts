@@ -8,6 +8,9 @@ export interface CampanhasPessoasAttributes extends Model {
   id_pessoas?: number;
   id_key?: string;
   dtenvio?: Date;
+  wapp_id?:string;
+  ret_id?:number;
+  ret_msg?:string;
 }
 
 export const CampanhasPessoas = sequelize.define<CampanhasPessoasAttributes>('campanhas_pessoas', {
@@ -32,7 +35,20 @@ export const CampanhasPessoas = sequelize.define<CampanhasPessoasAttributes>('ca
     dtenvio: {
       type: DataTypes.DATE,
       allowNull: true
-    } 
+    },
+    wapp_id: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    ret_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    ret_msg: {
+      type: DataTypes.STRING(1000),
+      allowNull: true
+    }
+
     
     
   }, {
